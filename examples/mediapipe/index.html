@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import { HandTracking } from '../../lib/mediapipe/hand-tracking.js';
+
+      const handTracking = await HandTracking.initialize({
+        hands: 2,
+        width: 1920,
+        height: 1080,
+        webcamOptions: { video: { width: 800, height: 600 } },
+      });
+
+      // subscribe to gestures
+      handTracking.on('gestureDetected', handleGesture);
+
+      update(() => {
+        // get current hand positions
+        const hands = handTracking.getHands();
+        if (hands.detected) {
+          console.log(hands);
+        }
+      });
+
+      function handleGesture(hand) {
+        console.log(hand);
+      }
+
+      function update(cb) {
+        requestAnimationFrame(function run() {
+          cb();
+          requestAnimationFrame(run);
+        });
+      }
+    </script>
+  </body>
+</html>

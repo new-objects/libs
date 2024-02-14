@@ -1,6 +1,6 @@
 {
   "name": "@new-objects/libs",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "utilties for js development for @nobj",
   "repository": {
     "type": "git",
@@ -8,8 +8,11 @@
   },
   "module": "index.js",
   "scripts": {
-    "build": "rimraf dist/lib && babel src -d dist/lib",
+    "build": "rimraf dist/lib && babel lib -d dist/lib",
+    "examples": "vite examples",
     "lint": "eslint .",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
     "updateNPM": "npm publish --access=public"
   },
   "browserslist": [
@@ -31,7 +34,9 @@
   "devDependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.23.9",
-    "@babel/preset-env": "^7.23.9"
+    "@babel/preset-env": "^7.23.9",
+    "jsdom": "^24.0.0",
+    "vitest": "^1.2.2"
   },
   "authors": "mi-skam"
 }
