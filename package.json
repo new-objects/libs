@@ -1,6 +1,6 @@
 {
   "name": "@new-objects/libs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "utilties for js development for @nobj",
   "repository": {
     "type": "git",
@@ -9,11 +9,11 @@
   "module": "index.js",
   "scripts": {
     "build": "rimraf dist/lib && babel lib -d dist/lib",
-    "examples": "vite examples",
-    "lint": "eslint .",
+    "examples": "vite",
+    "lint": "eslint lib",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "updateNPM": "npm publish --access=public"
+    "updateNPM": "npm run build && npm publish --access=public"
   },
   "browserslist": [
     "Chrome > 0 and last 2 years",

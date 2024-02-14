@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Webcam example</title>
+  </head>
+  <body>
+    <script type="module">
+      import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm';
+      import { Webcam } from '../../lib/web/webcam.js';
+
+      document.querySelector('body').innerHTML = `
+        <div id="app">
+          <p>Webcam demonstration</p>
+          <video autoplay playsinline id="webcam"></video>
+          <br>
+          <button id="start">start</button>
+          <button id="stop">stop</button>
+        </div>
+      `;
+
+      // init Webcam instance
+      const webcam = await Webcam.initialize();
+      await webcam.start();
+
+      // start and stop buttons
+      const startEl = document.querySelector('#start');
+      const stopEl = document.querySelector('#stop');
+      console.log(startEl, stopEl);
+
+      startEl.onclick = webcam.start;
+      stopEl.onclick = webcam.stop;
+
+      // gui
+      const gui = new GUI();
+      const config = {
+        current: webcam.currentWebcam.label,
+        all: webcam.allWebcams.map(cam => cam.label),
+      };
+
+      gui
+        .add(config, 'current', config.all)
+        .name('Webcam')
+        .onChange(value => webcam.changeByLabel(value));
+    </script>
+  </body>
+</html>

@@ -28,3 +28,19 @@ import { Webcam } from '@new-objects/libs';
     │   |   ├── webcam.js
     ├── package.json
 ```
+
+## Examples
+
+At the moment we have two examples, showing use-cases for this lib:
+1. hand-tracking
+2. webcam
+
+To have a go and look at them, simply start examples.
+```shell
+npm run examples
+```
+
+
+## Testing
+
+TBD
