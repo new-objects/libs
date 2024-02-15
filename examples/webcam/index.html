@@ -22,16 +22,15 @@
       `;
 
       // init Webcam instance
-      const webcam = await Webcam.initialize();
+      window.webcam = await Webcam.initialize();
       await webcam.start();
 
       // start and stop buttons
-      const startEl = document.querySelector('#start');
-      const stopEl = document.querySelector('#stop');
-      console.log(startEl, stopEl);
+      const buttonStart = document.querySelector('#start');
+      const buttonStop = document.querySelector('#stop');
 
-      startEl.onclick = webcam.start;
-      stopEl.onclick = webcam.stop;
+      buttonStart.onclick = webcam.start;
+      buttonStop.onclick = webcam.stop;
 
       // gui
       const gui = new GUI();
