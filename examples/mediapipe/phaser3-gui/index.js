@@ -1,4 +1,5 @@
 /* eslint-disable no-new */
+import GUI from 'lil-gui';
 import Phaser from 'phaser';
 import { HandTracking } from '../../../lib/mediapipe/hand-tracking.js';
 
@@ -42,6 +43,22 @@ class Example extends Phaser.Scene {
 
       // register resize action
       this.scale.on('resize', this.handleResize, this);
+
+      // gui
+      const gui = new GUI();
+      const config = {
+        backCamera: async () => {
+          window.webcam.stop();
+          window.webcam.startBack();
+        },
+        frontCamera: async () => {
+          window.webcam.stop();
+          window.webcam.startFront();
+        },
+      };
+
+      gui.add(config, 'backCamera');
+      gui.add(config, 'frontCamera');
     });
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@new-objects/libs",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "utilties for js development for @nobj",
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "@new-objects/prettier-config": "^0.0.2",
     "colors": "^1.4.0",
     "eslint-plugin-compat": "^4.2.0",
+    "lil-gui": "^0.19.1",
     "phaser": "^3.70.0",
     "qrcode": "^1.5.3",
     "rimraf": "^5.0.5",
