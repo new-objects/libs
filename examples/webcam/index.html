@@ -18,24 +18,37 @@
           <br>
           <button id="start">start</button>
           <button id="stop">stop</button>
+          <button id="startFront">start (front)</button>
+          <button id="startBack">start (back)</button>
         </div>
       `;
 
       // init Webcam instance
-      window.webcam = await Webcam.initialize();
+      window.webcam = await Webcam.initialize({
+        webcamOptions: {
+          video: { width: 1920, height: 1080, aspectRatio: 1.777 },
+        },
+      });
       await webcam.start();
+
+      let settings = webcam.stream.getVideoTracks()[0].getSettings();
 
       // start and stop buttons
       const buttonStart = document.querySelector('#start');
       const buttonStop = document.querySelector('#stop');
+      const buttonStartFront = document.querySelector('#startFront');
+      const buttonStartBack = document.querySelector('#startBack');
 
       buttonStart.onclick = webcam.start;
       buttonStop.onclick = webcam.stop;
+      buttonStartFront.onclick = webcam.startFront;
+      buttonStartBack.onclick = webcam.startBack;
 
       // gui
       const gui = new GUI();
       const config = {
         current: webcam.currentWebcam.label,
+        ar: settings.aspectRatio,
         all: webcam.allWebcams.map(cam => cam.label),
       };
 
@@ -43,6 +56,15 @@
         .add(config, 'current', config.all)
         .name('Webcam')
         .onChange(value => webcam.changeByLabel(value));
+
+      gui.add(settings, 'width', [640, 800, 1024, 1920]).onChange(value => {
+        const newOptions = webcam.webcamOptions;
+        newOptions.video.width = value;
+        webcam.changeOptions(newOptions);
+        settings = webcam.stream.getVideoTracks()[0].getSettings();
+      });
+      gui.add(settings, 'height').listen().disable();
+      gui.add(settings, 'aspectRatio');
     </script>
   </body>
 </html>
