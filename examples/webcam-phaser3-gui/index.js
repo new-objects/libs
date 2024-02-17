@@ -1,11 +1,7 @@
 /* eslint-disable no-new */
-import GUI from 'lil-gui';
 import Phaser from 'phaser';
-import { HandTracking } from '../../../lib/mediapipe/hand-tracking.js';
-
-/**
- * Phaser3 Lifecycle functions
- */
+import { Webcam } from '../../lib/web/webcam';
+import { webcamGui } from '../../lib/utils';
 
 class Example extends Phaser.Scene {
   constructor() {
@@ -17,6 +13,11 @@ class Example extends Phaser.Scene {
     const { width, height } = this.sys.game.canvas;
     this._width = width;
     this._height = height;
+
+    this.load.spritesheet('fullscreenCtrl', 'assets/fullscreen.png', {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
   }
 
   create() {
@@ -26,58 +27,37 @@ class Example extends Phaser.Scene {
     this.physics.add.existing(this.leftHand);
     this.physics.add.existing(this.rightHand);
 
-    /**
-     * Hand-Tracking
-     */
-
-    HandTracking.initialize({
-      hands: 2,
-      width: this._width,
-      height: this._height,
+    Webcam.initialize({
       webcamOptions: { video: { width: this._width, height: this._height } },
-    }).then(tracker => {
-      this._handTracking = tracker;
-
-      // register gesture handler
-      this._handTracking.on('gestureDetected', this.handleGesture.bind(this));
-
-      // register resize action
-      this.scale.on('resize', this.handleResize, this);
-
+    }).then(() => {
       // gui
-      const gui = new GUI();
-      const config = {
-        backCamera: async () => {
-          window.webcam.stop();
-          window.webcam.startBack();
-        },
-        frontCamera: async () => {
-          window.webcam.stop();
-          window.webcam.startFront();
-        },
-      };
-
-      gui.add(config, 'backCamera');
-      gui.add(config, 'frontCamera');
+      webcamGui();
     });
-  }
 
-  update() {
-    if (!this._handTracking) return;
+    // register resize action
+    this.scale.on('resize', this.handleResize, this);
 
-    this._handTracking.getHands(this._width, this._height);
-  }
+    // fullscreen control
+    const button = this.add
+      .image(this._width - 16, 16, 'fullscreenCtrl', 0)
+      .setOrigin(1, 0)
+      .setInteractive();
 
-  // handler
-  handleGesture(hands) {
-    if (!hands) return;
+    button.on(
+      'pointerup',
+      function () {
+        if (this.scale.isFullscreen) {
+          button.setFrame(0);
 
-    const selectedHand =
-      hands.handName === 'handRight' ? this.rightHand : this.leftHand;
+          this.scale.stopFullscreen();
+        } else {
+          button.setFrame(1);
 
-    selectedHand.setX(hands.x);
-    selectedHand.setY(hands.y);
-    selectedHand.body.reset(hands.x, hands.y);
+          this.scale.startFullscreen();
+        }
+      },
+      this,
+    );
   }
 
   handleResize(gameSize) {

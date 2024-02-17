@@ -1,10 +1,7 @@
 /* eslint-disable no-new */
 import Phaser from 'phaser';
-import { HandTracking } from '../../../lib/mediapipe/hand-tracking.js';
-
-/**
- * Phaser3 Lifecycle functions
- */
+import { HandTracking } from '../../lib/mediapipe/hand-tracking.js';
+import { webcamGui } from '../../lib/utils.js';
 
 class Example extends Phaser.Scene {
   constructor() {
@@ -42,6 +39,9 @@ class Example extends Phaser.Scene {
 
       // register resize action
       this.scale.on('resize', this.handleResize, this);
+
+      // gui
+      webcamGui();
     });
   }
 

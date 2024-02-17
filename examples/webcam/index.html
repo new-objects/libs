@@ -10,6 +10,7 @@
     <script type="module">
       import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm';
       import { Webcam } from '../../lib/web/webcam.js';
+      import { mergeObjects, webcamGui } from '../../lib/utils.js';
 
       document.querySelector('body').innerHTML = `
         <div id="app">
@@ -26,12 +27,12 @@
       // init Webcam instance
       window.webcam = await Webcam.initialize({
         webcamOptions: {
-          video: { width: 1920, height: 1080, aspectRatio: 1.777 },
+          video: { width: 1280, height: 720 },
         },
       });
       await webcam.start();
 
-      let settings = webcam.stream.getVideoTracks()[0].getSettings();
+      let mediaStreamSettings = webcam.stream.getVideoTracks()[0].getSettings();
 
       // start and stop buttons
       const buttonStart = document.querySelector('#start');
@@ -45,26 +46,7 @@
       buttonStartBack.onclick = webcam.startBack;
 
       // gui
-      const gui = new GUI();
-      const config = {
-        current: webcam.currentWebcam.label,
-        ar: settings.aspectRatio,
-        all: webcam.allWebcams.map(cam => cam.label),
-      };
-
-      gui
-        .add(config, 'current', config.all)
-        .name('Webcam')
-        .onChange(value => webcam.changeByLabel(value));
-
-      gui.add(settings, 'width', [640, 800, 1024, 1920]).onChange(value => {
-        const newOptions = webcam.webcamOptions;
-        newOptions.video.width = value;
-        webcam.changeOptions(newOptions);
-        settings = webcam.stream.getVideoTracks()[0].getSettings();
-      });
-      gui.add(settings, 'height').listen().disable();
-      gui.add(settings, 'aspectRatio');
+      webcamGui();
     </script>
   </body>
 </html>
