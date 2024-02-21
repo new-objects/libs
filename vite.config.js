@@ -2,7 +2,10 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
+    browser: {
+      enabled: true,
+      name: 'chrome',
+    },
     testTimeout: 1000,
   },
 });
