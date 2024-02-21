@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mergeObjects } from './utils';
+import { mergeObjects } from '../lib/utils';
 
 describe('Testing mergeObjects()', () => {
   const testKey1 = { key: 1 };

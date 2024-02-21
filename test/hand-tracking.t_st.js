@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { HandTracking } from './hand-tracking';
+import { HandTracking } from '../lib/mediapipe/hand-tracking';
 
 describe('Testing HandTracking class', () => {
   // Mocks
